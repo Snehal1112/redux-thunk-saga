@@ -1,24 +1,20 @@
 import axios from "axios";
 import API_END_POINT from "../config/index";
+import {call, put} from "redux-saga/effects";
+
+const getCharacters = () => {
+  return axios.get(API_END_POINT);
+}
 
 
-const fetchCharacters = () => {
-  return (dispatch) => {
-    axios.get(API_END_POINT)
-      .then((response) => {
-        dispatch(receiveCharacters(response.data.results));
-      })
-      .catch((error) => {
-        console.warn("error", error);
-      });
-  };
-};
+function *fetchCharacters () {
+  try {
+    const response = yield call(getCharacters);
+    yield put({type: "RECEIVE_CHARACTERS", payload: response.data.results});
+  } catch (e) {
+    // TODO
+  }
 
-const receiveCharacters = (payload) => {
-  return {
-    type: "RECEIVE_CHARACTERS",
-    payload
-  };
 }
 
 export {

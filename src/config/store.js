@@ -1,9 +1,11 @@
 import {createLogger} from "redux-logger";
-import thunk from "redux-thunk";
 import {createStore, combineReducers, applyMiddleware} from "redux";
+import createSagaMiddleware from "redux-saga";
+
 
 
 import appReducer from "../reducers";
+import {fetchCharacters} from "../actions/characters";
 
 
 const logger = createLogger({
@@ -11,12 +13,16 @@ const logger = createLogger({
   duration: true
 });
 
+const sagaMiddleware = createSagaMiddleware()
+
 
 const app = combineReducers({appReducer});
 
 const store = createStore(
   app,
-  applyMiddleware(thunk,logger)
+  applyMiddleware(logger, sagaMiddleware)
 );
+
+sagaMiddleware.run(fetchCharacters);
 
 export default store;

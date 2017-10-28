@@ -5,13 +5,12 @@ import {fetchCharacters} from "../actions/characters";
 
 
 class AppContainer extends React.Component {
-
   state = {
     characters: null
   };
 
   componentDidMount () {
-    this.props.dispatch(fetchCharacters());
+    fetchCharacters();
   }
 
   componentWillReceiveProps (nextProps) {
